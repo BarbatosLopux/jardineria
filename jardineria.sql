@@ -195,7 +195,29 @@ SELECT ciudad, telefono FROM oficina WHERE pais = 'España';
 --3. Devuelve un listado con el nombre, apellidos y email de los empleados cuyo jefe tiene un código de jefe igual a 7 
 SELECT nombre, CONCAT(apellido1,"  ",apellido2), email FROM empleado WHERE codigo_jefe = 7;
 --4. Devuelve el nombre del puesto, nombre apellidos y email del jefe de la empresa.
-SELECT  
+SELECT e.puesto, CONCAT(e.nombre,'',e.apellido1,e.apellido2) AS Nombre_completo, e.email FROM empleado e WHERE LOWER(e.puesto)='Director general';
+--5. Devuelve un listado con el nombre, apellidos y puesto de aquellos empleados que no sean representantes de ventas.
+SELECT e.nombre,CONCAT(e.apellido1,"   ", e.apellido2) AS Apellidos, e.puesto FROM empleado e WHERE LOWER(e.puesto)<>'Representante ventas';
+--6. Devuelve un listado con el nombre de todos los clientes españoles. 
+SELECT c.nombre_cliente FROM cliente c WHERE pais = 'spain';
+--7. Devuelve un listado con el nombre de los todos los clientes españoles.
+
+
+-- CUARTO LISTADO DE CONSULTAS
+
+--1. Devuelve el nombre del cliente con mayor límite de crédito.
+SELECT c.nombre_cliente, c.limite_credito FROM (SELECT nombre_cliente, limite_credito FROM cliente ORDER BY limite_credito DESC LIMIT 1) c;
+
+--2. Devuelve el nombre del producto que tenga el precio de venta más caro.
+SELECT p.nombre, p.precio_venta FROM (SELECT nombre, precio_venta FROM producto ORDER BY precio_venta DESC LIMIT 1)p;
+--3. Devuelve el nombre del producto del que se han vendido más unidades. (Tenga en cuenta que tendrá que calcular cuál es el número total de unidades que se han vendido de cada producto a partir de los datos de la tabla `detalle_pedido`)
+--4. Los clientes cuyo límite de crédito sea mayor que los pagos que haya realizado. (Sin utilizar `INNER JOIN`).
+--5. Devuelve el producto que más unidades tiene en stock.
+--6. Devuelve el producto que menos unidades tiene en stock.
+--7. Devuelve el nombre, los apellidos y el email de los empleados que están a cargo de **Alberto Soria**.
+
+
+
 -- Datos
 INSERT INTO oficina VALUES ('BCN-ES','Barcelona','España','Barcelona','08019','+34 93 3561182','Avenida Diagonal, 38','3A escalera Derecha');
 INSERT INTO oficina VALUES ('BOS-USA','Boston','EEUU','MA','02108','+1 215 837 0825','1550 Court Place','Suite 102');
