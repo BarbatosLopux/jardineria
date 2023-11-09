@@ -184,17 +184,29 @@ SELECT o.codigo_oficina, o.ciudad, o.pais FROM oficina o WHERE o.codigo_oficina 
  ```
 2. Devuelve un listado con la ciudad y el telefono de las oficinas de España.
 ```sql
+SELECT ciudad, telefono FROM oficina WHERE pais = 'España';
 
  ```
 3.  Devuelve un listado con el nombre, apellidos y email de los empleados cuyo jefe tiene un código de jefe igual a 7 
 ```sql
+SELECT nombre, CONCAT(apellido1,"  ",apellido2), email FROM empleado WHERE codigo_jefe = 7;
+
  ```
 4. Devuelve el nombre del puesto, nombre apellidos y email del jefe de la empresa.
 ```sql
+SELECT e.puesto, CONCAT(e.nombre,'',e.apellido1,e.apellido2) AS Nombre_completo, e.email FROM empleado e WHERE LOWER(e.puesto)='Director general';
+
+
  ```
 5. Devuelve un listado con el nombre, apellidos y puesto de aquellos empleados que no sean representantes de ventas.
 ```sql
+SELECT e.nombre,CONCAT(e.apellido1,"   ", e.apellido2) AS Apellidos, e.puesto FROM empleado e WHERE LOWER(e.puesto)<>'Representante ventas';
  ``` 
+6. Devuelve un listado con el nombre de todos los clientes españoles.
+ ```sql
+ 
+
+  ``` 
 7. Devuelve un listado con el nombre de los todos los clientes españoles.
 ```sql
  ```
@@ -246,6 +258,45 @@ SELECT o.codigo_oficina, o.ciudad, o.pais FROM oficina o WHERE o.codigo_oficina 
 18. Devuelve un listado con todos los clientes que sean de la ciudad de Madrid y cuyo representante de ventas tenga el código de empleado 11 0 30.
 ```sql
  ```
+
+
+## CUARTO LISTADO DE CONSULTAS  
+
+### 1.4.8 Subconsultas
+
+#### 1.4.8.1 Con operadores básicos de comparación
+
+1. Devuelve el nombre del cliente con mayor límite de crédito.
+2. Devuelve el nombre del producto que tenga el precio de venta más caro.
+3. Devuelve el nombre del producto del que se han vendido más unidades. (Tenga en cuenta que tendrá que calcular cuál es el número total de unidades que se han vendido de cada producto a partir de los datos de la tabla `detalle_pedido`)
+4. Los clientes cuyo límite de crédito sea mayor que los pagos que haya realizado. (Sin utilizar `INNER JOIN`).
+5. Devuelve el producto que más unidades tiene en stock.
+6. Devuelve el producto que menos unidades tiene en stock.
+7. Devuelve el nombre, los apellidos y el email de los empleados que están a cargo de **Alberto Soria**.
+
+#### 1.4.8.2 Subconsultas con ALL y ANY
+
+1. Devuelve el nombre del cliente con mayor límite de crédito.
+2. Devuelve el nombre del producto que tenga el precio de venta más caro.
+3. Devuelve el producto que menos unidades tiene en stock.
+
+#### 1.4.8.3 Subconsultas con IN y NOT IN
+
+1. Devuelve el nombre, apellido1 y cargo de los empleados que no representen a ningún cliente.
+2. Devuelve un listado que muestre solamente los clientes que no han realizado ningún pago.
+3. Devuelve un listado que muestre solamente los clientes que sí han realizado algún pago.
+4. Devuelve un listado de los productos que nunca han aparecido en un pedido.
+5. Devuelve el nombre, apellidos, puesto y teléfono de la oficina de aquellos empleados que no sean representante de ventas de ningún cliente.
+6. Devuelve las oficinas donde **no trabajan** ninguno de los empleados que hayan sido los representantes de ventas de algún cliente que haya realizado la compra de algún producto de la gama `Frutales`.
+7. Devuelve un listado con los clientes que han realizado algún pedido pero no han realizado ningún pago.
+
+#### 1.4.8.4 Subconsultas con EXISTS y NOT EXISTS
+
+1. Devuelve un listado que muestre solamente los clientes que no han realizado ningún pago.
+2. Devuelve un listado que muestre solamente los clientes que sí han realizado algún pago.
+3. Devuelve un listado de los productos que nunca han aparecido en un pedido.
+4. Devuelve un listado de los productos que han aparecido en un pedido alguna vez.
+
 
 
 
