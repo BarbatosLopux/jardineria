@@ -180,9 +180,11 @@ SELECT o.codigo_oficina, o.ciudad, o.pais FROM oficina o WHERE o.codigo_oficina 
 
 1. Devuelve un listado con el código de oficina y la ciudad donde hay oficinas.
  ```sql
+ SELECT codigo_oficina, ciudad FROM oficina 
  ```
 2. Devuelve un listado con la ciudad y el telefono de las oficinas de España.
 ```sql
+
  ```
 3.  Devuelve un listado con el nombre, apellidos y email de los empleados cuyo jefe tiene un código de jefe igual a 7 
 ```sql
