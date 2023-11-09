@@ -187,7 +187,15 @@ SELECT o.codigo_oficina, o.ciudad, o.pais FROM oficina o WHERE o.codigo_oficina 
 --12. Devuelve un listado con los datos de los empleados que no tienen clientes asociados y el nombre de su jefe asociado.
  SELECT e.codigo_empleado, e.nombre AS EMPLEADO, e.codigo_jefe, j.nombre AS JEFE FROM empleado e LEFT JOIN empleado j ON e.codigo_jefe = j.codigo_empleado LEFT JOIN cliente c ON e.codigo_empleado = c.codigo_empleado_rep_ventas WHERE c.codigo_cliente IS NULL;
 
-
+-- Tercer listado de consultas ADD
+--1.Devuelve un listado con el código de oficina y la ciudad donde hay oficinas.
+SELECT codigo_oficina, ciudad FROM oficina;
+--2. Devuelve un listado con la ciudad y el telefono de las oficinas de España.
+SELECT ciudad, telefono FROM oficina WHERE pais = 'España';
+--3. Devuelve un listado con el nombre, apellidos y email de los empleados cuyo jefe tiene un código de jefe igual a 7 
+SELECT nombre, CONCAT(apellido1,"  ",apellido2), email FROM empleado WHERE codigo_jefe = 7;
+--4. Devuelve el nombre del puesto, nombre apellidos y email del jefe de la empresa.
+SELECT  
 -- Datos
 INSERT INTO oficina VALUES ('BCN-ES','Barcelona','España','Barcelona','08019','+34 93 3561182','Avenida Diagonal, 38','3A escalera Derecha');
 INSERT INTO oficina VALUES ('BOS-USA','Boston','EEUU','MA','02108','+1 215 837 0825','1550 Court Place','Suite 102');
