@@ -174,4 +174,83 @@ SELECT o.codigo_oficina, o.ciudad, o.pais FROM oficina o WHERE o.codigo_oficina 
  SELECT e.codigo_empleado, e.nombre AS EMPLEADO, e.codigo_jefe, j.nombre AS JEFE FROM empleado e LEFT JOIN empleado j ON e.codigo_jefe = j.codigo_empleado LEFT JOIN cliente c ON e.codigo_empleado = c.codigo_empleado_rep_ventas WHERE c.codigo_cliente IS NULL;
 
  ```
+
+
+## Tercer Listado de consultas 
+
+1. Devuelve un listado con el código de oficina y la ciudad donde hay oficinas.
+ ```sql
+ ```
+2. Devuelve un listado con la ciudad y el telefono de las oficinas de España.
+```sql
+ ```
+3.  Devuelve un listado con el nombre, apellidos y email de los empleados cuyo jefe tiene un código de jefe igual a 7 
+```sql
+ ```
+4. Devuelve el nombre del puesto, nombre apellidos y email del jefe de la empresa.
+```sql
+ ```
+5. Devuelve un listado con el nombre, apellidos y puesto de aquellos empleados que no sean representantes de ventas.
+```sql
+ ``` 
+7. Devuelve un listado con el nombre de los todos los clientes españoles.
+```sql
+ ```
+8. Devuelve un listado con los distintos estados por los que puede pasar un pedido.
+```sql
+ ```
+9. Devuelve un listado con el código de cliente de aquellos clientes que realizaron algún pago en 2008. Tenga en cuenta que deberá eliminar aquellos códigos de cliente que aparezcan repetidos. Resuelva la consulta:
+
+* Utilizando la función Year de MySQL.
+```sql
+ ```
+* Utilizando la función DATE FORMAT de MySQL.
+```sql
+ ```
+* Sin utilizar ninguna de las funciones anteriores.
+```sql
+ ```
+9. Devuelve un listado con el código de pedido, código de cliente, fecha esperada y fecha de entrega de los pedidos que no han sido entregados a tiempo.
+```sql
+ ```
+10. Devuelve un listado con el código de pedido, código de cliente, fecha esperada y fecha de entrega de los pedidos cuya fecha de entrega ha sido al menos dos días antes de la fecha esperada.
+```sql
+ ```
+* Utilizando la función APoDATE de MySQL.
+```sql
+ ```
+* Utilizando la función DATEDIFF de MySQL.
+```sql
+ ```
+* ¿Sería posible resolver esta consulta utilizando el operador de suma + oresta -?
+```sql
+ ```
+11. Devuelve un listado de todos los pedidos que fueron rechazados en 2009 .
+```sql
+ ```
+13. Devuelve un listado de todos los pedidos que han sido entregados en el mes de enero de cualquier año.
+```sql
+ ```
+
+15. Devuelve un listado con todos los pagos que se realizaron en el año 200s mediante Paypal . Ordene el resultado de mayor a menor.
+```sql
+ ```
+16. Devuelve un listado con todas las formas de pago que aparecen en la tabla pago . Tenga en cuenta que no deben aparecer formas de pago repetidas.
+```sql
+ ```
+17. Devuelve un listado con todos los productos que pertenecen a la gama Ornamentales y que tienen más de 180 unidades en stock. El listado deberá estar ordenado por su precio de venta, mostrando en primer lugar los de mayor precio.
+```sql
+ ```
+18. Devuelve un listado con todos los clientes que sean de la ciudad de Madrid y cuyo representante de ventas tenga el código de empleado 11 0 30.
+```sql
+ ```
+
+
+
+
+
+
+
+
+
  
