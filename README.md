@@ -204,61 +204,87 @@ SELECT e.nombre,CONCAT(e.apellido1,"   ", e.apellido2) AS Apellidos, e.puesto FR
  ``` 
 6. Devuelve un listado con el nombre de todos los clientes españoles.
  ```sql
- 
-
+SELECT CONCAT(c.nombre_contacto,"  ",c.apellido_contacto) AS Nombre_clientes_españoles  FROM cliente c WHERE pais = 'spain';
   ``` 
-7. Devuelve un listado con el nombre de los todos los clientes españoles.
+7. Devuelve un listado con los distintos estados por los que puede pasar un pedido.
 ```sql
+
+SELECT p.estado FROM pedido p;
+
  ```
-8. Devuelve un listado con los distintos estados por los que puede pasar un pedido.
-```sql
- ```
-9. Devuelve un listado con el código de cliente de aquellos clientes que realizaron algún pago en 2008. Tenga en cuenta que deberá eliminar aquellos códigos de cliente que aparezcan repetidos. Resuelva la consulta:
+8. Devuelve un listado con el código de cliente de aquellos clientes que realizaron algún pago en 2008. Tenga en cuenta que deberá eliminar aquellos códigos de cliente que aparezcan repetidos. Resuelva la consulta:
 
 * Utilizando la función Year de MySQL.
 ```sql
+SELECT DISTINCT codigo_cliente FROM pago WHERE YEAR(fecha_pago) = 2008;
+
  ```
 * Utilizando la función DATE FORMAT de MySQL.
+
 ```sql
+SELECT DISTINCT codigo_cliente FROM pago WHERE DATE_FORMAT(fecha_pago, '%Y') = '2008';
+
  ```
 * Sin utilizar ninguna de las funciones anteriores.
 ```sql
+SELECT DISTINCT p.codigo_cliente FROM pago p JOIN pedido pe ON p.codigo_cliente = pe.codigo_cliente WHERE pe.fecha_pedido BETWEEN '2008-01-01' AND '2008-12-31';
+
  ```
 9. Devuelve un listado con el código de pedido, código de cliente, fecha esperada y fecha de entrega de los pedidos que no han sido entregados a tiempo.
 ```sql
+SELECT codigo_pedido, codigo_cliente, fecha_esperada, fecha_entrega FROM pedido WHERE fecha_entrega > fecha_esperada;
+
  ```
 10. Devuelve un listado con el código de pedido, código de cliente, fecha esperada y fecha de entrega de los pedidos cuya fecha de entrega ha sido al menos dos días antes de la fecha esperada.
-```sql
- ```
+
 * Utilizando la función APoDATE de MySQL.
 ```sql
+SELECT codigo_pedido, codigo_cliente, fecha_esperada, fecha_entrega FROM pedido WHERE ADDDATE(fecha_entrega, 2) <= fecha_esperada;
+
  ```
 * Utilizando la función DATEDIFF de MySQL.
 ```sql
+SELECT codigo_pedido, codigo_cliente, fecha_esperada, fecha_entrega FROM pedido WHERE DATEDIFF(fecha_esperada, fecha_entrega) >= 2;
+
  ```
 * ¿Sería posible resolver esta consulta utilizando el operador de suma + oresta -?
 ```sql
+No es posible 
  ```
 11. Devuelve un listado de todos los pedidos que fueron rechazados en 2009 .
 ```sql
- ```
-13. Devuelve un listado de todos los pedidos que han sido entregados en el mes de enero de cualquier año.
-```sql
- ```
+SELECT codigo_pedido, codigo_cliente, fecha_esperada, fecha_entrega FROM pedido WHERE estado = 'rechazado' AND YEAR(fecha_esperada) = 2009;
 
-15. Devuelve un listado con todos los pagos que se realizaron en el año 200s mediante Paypal . Ordene el resultado de mayor a menor.
-```sql
  ```
-16. Devuelve un listado con todas las formas de pago que aparecen en la tabla pago . Tenga en cuenta que no deben aparecer formas de pago repetidas.
-```sql
- ```
-17. Devuelve un listado con todos los productos que pertenecen a la gama Ornamentales y que tienen más de 180 unidades en stock. El listado deberá estar ordenado por su precio de venta, mostrando en primer lugar los de mayor precio.
-```sql
- ```
-18. Devuelve un listado con todos los clientes que sean de la ciudad de Madrid y cuyo representante de ventas tenga el código de empleado 11 0 30.
-```sql
- ```
+12. Devuelve un listado de todos los pedidos que han sido entregados en el mes de enero de cualquier año.
+```SQL
+SELECT codigo_pedido, codigo_cliente, fecha_esperada, fecha_entrega FROM pedido WHERE MONTH(fecha_entrega) = 1;
 
+```
+
+13. Devuelve un listado con todos los pagos que se realizaron en el año 2008 mediante Paypal. Ordene el resultado de mayor a menor.
+```SQL
+SELECT * FROM pago WHERE YEAR(fecha_pago) = 2008 AND forma_pago = 'Paypal' ORDER BY total DESC;
+
+```
+
+14. Devuelve un listado con todas las formas de pago que aparecen en la tabla pago. Tenga en cuenta que no deben aparecer formas de pago repetidas.
+```SQL
+SELECT DISTINCT forma_pago FROM pago;
+
+```
+
+15. Devuelve un listado con todos los productos que pertenecen a la gama Ornamentales y que tienen más de 100 unidades en stock. El listado deberá estar ordenado por su precio de venta, mostrando en primer lugar los de mayor precio.
+```SQL
+SELECT * FROM producto WHERE gama = 'Ornamentales' AND cantidad_en_stock > 100 ORDER BY precio_venta DESC;
+
+```
+
+16. Devuelve un listado con todos los clientes que sean de la ciudad de Madrid y cuyo representante de ventas tenga el código de empleado 11 o 30.
+```SQL
+SELECT * FROM cliente WHERE ciudad = 'Madrid' AND codigo_empleado_rep_ventas IN (11, 30);
+
+```
 
 ## CUARTO LISTADO DE CONSULTAS  
 
