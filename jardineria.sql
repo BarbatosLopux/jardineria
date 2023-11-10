@@ -199,8 +199,48 @@ SELECT e.puesto, CONCAT(e.nombre,'',e.apellido1,e.apellido2) AS Nombre_completo,
 --5. Devuelve un listado con el nombre, apellidos y puesto de aquellos empleados que no sean representantes de ventas.
 SELECT e.nombre,CONCAT(e.apellido1,"   ", e.apellido2) AS Apellidos, e.puesto FROM empleado e WHERE LOWER(e.puesto)<>'Representante ventas';
 --6. Devuelve un listado con el nombre de todos los clientes españoles. 
-SELECT c.nombre_cliente FROM cliente c WHERE pais = 'spain';
---7. Devuelve un listado con el nombre de los todos los clientes españoles.
+SELECT CONCAT(c.nombre_contacto,"  ",c.apellido_contacto) AS Nombre_clientes_españoles  FROM cliente c WHERE pais = 'spain';
+
+--7. Devuelve un listado con los distintos estados por los que puede pasar un pedido.
+SELECT p.estado FROM pedido p;
+--8. Devuelve un listado con el código de cliente de aquellos clientes que realizaron algún pago en 2008. Tenga en cuenta que deberá eliminar aquellos códigos de cliente que aparezcan repetidos. Resuelva la consulta:
+--Utilizando la función Year de MySQL.
+
+SELECT DISTINCT codigo_cliente FROM pago WHERE YEAR(fecha_pago) = 2008;
+
+--Utilizando la función DATE FORMAT de MySQL.
+SELECT DISTINCT codigo_cliente FROM pago WHERE DATE_FORMAT(fecha_pago, '%Y') = '2008';
+
+--Sin utilizar ninguna de las funciones anteriores.
+SELECT DISTINCT p.codigo_cliente FROM pago p JOIN pedido pe ON p.codigo_cliente = pe.codigo_cliente WHERE pe.fecha_pedido BETWEEN '2008-01-01' AND '2008-12-31';
+--9. Devuelve un listado con el código de pedido, código de cliente, fecha esperada y fecha de entrega de los pedidos que no han sido entregados a tiempo.
+SELECT codigo_pedido, codigo_cliente, fecha_esperada, fecha_entrega FROM pedido WHERE fecha_entrega > fecha_esperada;
+
+--10. Devuelve un listado con el código de pedido, código de cliente, fecha esperada y fecha de entrega de los pedidos cuya fecha de entrega ha sido al menos dos días antes de la fecha esperada.
+-- FUNCION ADD
+SELECT codigo_pedido, codigo_cliente, fecha_esperada, fecha_entrega FROM pedido WHERE ADDDATE(fecha_entrega, 2) <= fecha_esperada;
+-- FUNCION DATEDIFF
+SELECT codigo_pedido, codigo_cliente, fecha_esperada, fecha_entrega FROM pedido WHERE DATEDIFF(fecha_esperada, fecha_entrega) >= 2;
+-- no es POSIBLE CON SUMA O RESTA DESPERDICIE UNA HORA DE MI VIDAAAAAAAAAAAAAAAA
+
+--11. Devuelve un listado de todos los pedidos que fueron rechazados en 2009 .
+SELECT codigo_pedido, codigo_cliente, fecha_esperada, fecha_entrega FROM pedido WHERE estado = 'rechazado' AND YEAR(fecha_esperada) = 2009;
+--12. Devuelve un listado de todos los pedidos que han sido entregados en el mes de enero de cualquier año.
+SELECT codigo_pedido, codigo_cliente, fecha_esperada, fecha_entrega FROM pedido WHERE MONTH(fecha_entrega) = 1;
+--13. Devuelve un listado con todos los pagos que se realizaron en el año 2008 mediante Paypal. Ordene el resultado de mayor a menor.
+SELECT * FROM pago WHERE YEAR(fecha_pago) = 2008 AND forma_pago = 'Paypal' ORDER BY total DESC;
+
+--14. Devuelve un listado con todas las formas de pago que aparecen en la tabla pago. Tenga en cuenta que no deben aparecer formas de pago repetidas.
+SELECT DISTINCT forma_pago FROM pago;
+
+--15. Devuelve un listado con todos los productos que pertenecen a la gama Ornamentales y que tienen más de 100 unidades en stock. El listado deberá estar ordenado por su precio de venta, mostrando en primer lugar los de mayor precio.
+SELECT * FROM producto WHERE gama = 'Ornamentales' AND cantidad_en_stock > 100 ORDER BY precio_venta DESC;
+
+--16. Devuelve un listado con todos los clientes que sean de la ciudad de Madrid y cuyo representante de ventas tenga el código de empleado 11 o 30.
+SELECT * FROM cliente WHERE ciudad = 'Madrid' AND codigo_empleado_rep_ventas IN (11, 30);
+
+
+
 
 
 -- CUARTO LISTADO DE CONSULTAS
