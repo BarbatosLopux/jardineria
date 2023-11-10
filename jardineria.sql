@@ -244,6 +244,9 @@ SELECT * FROM cliente WHERE ciudad = 'Madrid' AND codigo_empleado_rep_ventas IN 
 
 
 -- CUARTO LISTADO DE CONSULTAS
+-- 1.4.8 Subconsultas
+
+-- 1.4.8.1 Con operadores básicos de comparación
 
 --1. Devuelve el nombre del cliente con mayor límite de crédito.
 SELECT c.nombre_cliente, c.limite_credito FROM (SELECT nombre_cliente, limite_credito FROM cliente ORDER BY limite_credito DESC LIMIT 1) c;
@@ -251,12 +254,21 @@ SELECT c.nombre_cliente, c.limite_credito FROM (SELECT nombre_cliente, limite_cr
 --2. Devuelve el nombre del producto que tenga el precio de venta más caro.
 SELECT p.nombre, p.precio_venta FROM (SELECT nombre, precio_venta FROM producto ORDER BY precio_venta DESC LIMIT 1)p;
 --3. Devuelve el nombre del producto del que se han vendido más unidades. (Tenga en cuenta que tendrá que calcular cuál es el número total de unidades que se han vendido de cada producto a partir de los datos de la tabla `detalle_pedido`)
+SELECT p.nombre AS Nombre_producto  FROM producto p WHERE p.codigo_producto = (SELECT dp.codigo_producto   FROM detalle_pedido dp GROUP BY dp.codigo_producto ORDER BY SUM(dp.cantidad) DESC LIMIT 1 ); 
 --4. Los clientes cuyo límite de crédito sea mayor que los pagos que haya realizado. (Sin utilizar `INNER JOIN`).
+SELECT c.nombre_cliente, c.codigo_cliente, c.limite_credito FROM cliente c WHERE c.limite_credito > (SELECT IFNULL(SUM(total), 0) FROM pago WHERE c.codigo_cliente = pago.codigo_cliente);
 --5. Devuelve el producto que más unidades tiene en stock.
+SELECT p.nombre  FROM producto p WHERE p.cantidad_en_stock=(SELECT MAX (cantidad_en_stock)FROM producto) ; 
+
 --6. Devuelve el producto que menos unidades tiene en stock.
+SELECT p.nombre FROM producto p WHERE p.cantidad_en_stock=(SELECT MIN (cantidad_en_stock)FROM producto);
 --7. Devuelve el nombre, los apellidos y el email de los empleados que están a cargo de **Alberto Soria**.
+SELECT e.nombre, CONCAT(e.apellido1,"  ", e.apellido2), e.email FROM empleado e WHERE e.codigo_empleado IN (SELECT codigo_jefe FROM empleado WHERE nombre = 'Alberto' AND apellido1 = 'Soria') ;
 
-
+SELECT e.nombre, CONCAT(e.apellido1, " ", e.apellido2), e.email 
+FROM empleado e 
+WHERE e.codigo_empleado IN (SELECT codigo_empleado_jefe FROM empleado WHERE nombre = 'Alberto' AND apellido1 = 'Soria')
+-- 1.4.8.2 Subconsultas con ALL y ANY
 
 -- Datos
 INSERT INTO oficina VALUES ('BCN-ES','Barcelona','España','Barcelona','08019','+34 93 3561182','Avenida Diagonal, 38','3A escalera Derecha');
