@@ -330,28 +330,39 @@ CORREGIR
 
 1. Devuelve el nombre del cliente con mayor límite de crédito.
 ```sql
-
+SELECT  c.nombre_cliente, c.limite_credito
+FROM cliente c
+WHERE c.limite_credito >= ALL (SELECT MAX(limite_credito) FROM cliente); 
 ```
 2. Devuelve el nombre del producto que tenga el precio de venta más caro.
 ```sql
-
-
+SELECT p.nombre, p.precio_venta
+FROM producto p 
+WHERE p.precio_venta >= ALL (SELECT MAX(precio_venta) FROM producto); 
 ```
 3. Devuelve el producto que menos unidades tiene en stock.
 ```sql
+SELECT  p.nombre, cantidad_en_stock
+FROM producto p
+WHERE  p.cantidad_en_stock <= ALL (SELECT MIN(cantidad_en_stock) FROM producto); 
 ```
 
 #### 1.4.8.3 Subconsultas con IN y NOT IN
 
 1. Devuelve el nombre, apellido1 y cargo de los empleados que no representen a ningún cliente.
 ```sql
+SELECT e.nombre, e.apellido1 AS  Primer_apellido, e.puesto 
+FROM empleado e
+WHERE codigo_empleado NOT IN (SELECT codigo_empleado_rep_ventas FROM cliente);  
 ```
 2. Devuelve un listado que muestre solamente los clientes que no han realizado ningún pago.
 ```sql
+SELECT * FROM cliente
+WHERE codigo_cliente NOT IN (SELECT codigo_cliente FROM pago); 
 ```
 3. Devuelve un listado que muestre solamente los clientes que sí han realizado algún pago.
 ```sql
-
+e
 ```
 4. Devuelve un listado de los productos que nunca han aparecido en un pedido.
 ```sql
