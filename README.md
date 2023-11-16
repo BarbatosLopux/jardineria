@@ -470,7 +470,32 @@ WHERE EXISTS (
 ```
 
 
+### Consultas 5 TIPS SQL (Group By, Where, Update, Select)
 
+#### Group By 
+1. Multiple agrupamiento 
+```sql
+
+SELECT p.nombre, p.proveedor, COUNT(*) AS Total 
+FROM producto  
+INNER JOIN cliente c ON c. = dimensiones.codigo_producto
+GROUP BY gama.nombre, dimensiones.proveedor;
+
+```
+2.
+```sql
+```
+3.
+```sql
+```
+4.
+```sql
+
+SELECT 
+```
+5.
+```sql
+```
 
 
 
