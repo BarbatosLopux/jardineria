@@ -362,14 +362,34 @@ WHERE codigo_cliente NOT IN (SELECT codigo_cliente FROM pago);
 ```
 3. Devuelve un listado que muestre solamente los clientes que sí han realizado algún pago.
 ```sql
-e
+SELECT *
+FROM cliente
+WHERE codigo_cliente IN (
+    SELECT DISTINCT codigo_cliente
+    FROM pago
+);
 ```
 4. Devuelve un listado de los productos que nunca han aparecido en un pedido.
 ```sql
+SELECT *
+FROM producto
+WHERE codigo_producto NOT IN (
+    SELECT DISTINCT codigo_producto
+    FROM detalle_pedido
+);
+
 ```
 5. Devuelve el nombre, apellidos, puesto y teléfono de la oficina de aquellos empleados que no 
 sean representante de ventas de ningún cliente.
 ```sql
+SELECT e.nombre, e.apellido1, e.apellido2, e.puesto, o.telefono
+FROM empleado e
+JOIN oficina o ON e.codigo_oficina = o.codigo_oficina
+WHERE e.codigo_empleado NOT IN (
+    SELECT DISTINCT codigo_empleado_rep_ventas
+    FROM cliente
+    WHERE codigo_empleado_rep_ventas IS NOT NULL
+);
 ```
 6. Devuelve las oficinas donde **no trabajan** ninguno de los empleados que hayan sido los representantes de ventas de algún cliente que haya realizado la compra de algún producto de la gama `Frutales`.
 ```sql
@@ -381,10 +401,45 @@ sean representante de ventas de ningún cliente.
 #### 1.4.8.4 Subconsultas con EXISTS y NOT EXISTS
 
 1. Devuelve un listado que muestre solamente los clientes que no han realizado ningún pago.
+```sql
+SELECT *
+FROM cliente c
+WHERE NOT EXISTS (
+    SELECT 1
+    FROM pago p
+    WHERE p.codigo_cliente = c.codigo_cliente
+);
+```
 2. Devuelve un listado que muestre solamente los clientes que sí han realizado algún pago.
+```sql
+SELECT *
+FROM cliente c
+WHERE EXISTS (
+    SELECT 1
+    FROM pago p
+    WHERE p.codigo_cliente = c.codigo_cliente
+);
+```
 3. Devuelve un listado de los productos que nunca han aparecido en un pedido.
+```sql
+SELECT *
+FROM producto pr
+WHERE NOT EXISTS (
+    SELECT 1
+    FROM detalle_pedido dp
+    WHERE dp.codigo_producto = pr.codigo_producto
+);
+```
 4. Devuelve un listado de los productos que han aparecido en un pedido alguna vez.
-
+```sql
+SELECT *
+FROM producto pr
+WHERE EXISTS (
+    SELECT 1
+    FROM detalle_pedido dp
+    WHERE dp.codigo_producto = pr.codigo_producto
+);
+```
 
 
 
