@@ -393,9 +393,37 @@ WHERE e.codigo_empleado NOT IN (
 ```
 6. Devuelve las oficinas donde **no trabajan** ninguno de los empleados que hayan sido los representantes de ventas de algún cliente que haya realizado la compra de algún producto de la gama `Frutales`.
 ```sql
+SELECT *
+FROM oficina o
+WHERE o.codigo_oficina NOT IN (
+    SELECT DISTINCT e.codigo_oficina
+    FROM empleado e
+    WHERE e.codigo_empleado NOT IN (
+        SELECT DISTINCT codigo_empleado
+        FROM cliente
+        WHERE codigo_cliente IN (
+            SELECT DISTINCT codigo_cliente
+            FROM pedido pd
+            JOIN detalle_pedido dp ON pd.codigo_pedido = dp.codigo_pedido
+            JOIN producto pr ON dp.codigo_producto = pr.codigo_producto
+            WHERE pr.gama = 'Frutales'
+        )
+    )
+);
+
 ```
 7. Devuelve un listado con los clientes que han realizado algún pedido pero no han realizado ningún pago.
 ```sql
+SELECT *
+FROM cliente 
+WHERE codigo_cliente IN (
+    SELECT DISTINCT codigo_cliente
+    FROM pedido)
+AND codigo_cliente NOT IN (
+    SELECT DISTINCT codigo_cliente
+    FROM pago 
+);
+
 ```
 
 #### 1.4.8.4 Subconsultas con EXISTS y NOT EXISTS
