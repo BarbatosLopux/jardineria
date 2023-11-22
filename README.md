@@ -515,11 +515,46 @@ GROUP BY o.codigo_oficina, o.pais;
 ```
 #### WHERE 
 
-1.  
-2.
-3.
-4.
-5.
+1. NOt IN, enumere los productos cuya identificación no sea 'AR-001' ni 'FR-1'.
+
+    ```sql
+    SELECT codigo_producto 
+    FROM producto 
+    WHERE codigo_producto NOT IN('AR-001', 'FR-1');
+    ```
+
+2. Subconsulta, Lista los rangos que hay en el producto y que son mayores que cero.
+
+    ```sql
+    SELECT * 
+    FROM gama_producto g 
+    WHERE (SELECT count(*) FROM producto  WHERE producto.gama = g.gama) > 0;
+    ```
+
+3. REGEX, Nombre del producto donde contiene una 'y' o una 'z'.
+
+    ```sql
+    SELECT * 
+    FROM producto 
+    WHERE nombre REGEXP "[y-z]";
+    ```
+
+4. IN y Subconsulta, nombre del producto donde su rango comienza con A.
+
+    ```sql
+    SELECT * 
+    FROM producto 
+    WHERE gama IN(SELECT gama FROM gama_producto WHERE gama REGEXP '^A');
+    ```
+
+
+5. Funciones, Nombre del Producto donde su gama comienza con F.
+
+    ```sql
+    SELECT * 
+    FROM producto 
+    WHERE SUBSTRING(gama,1,1) = 'F';
+    ```
 
 #### UPDATE 
 1. 
@@ -557,19 +592,47 @@ SET pais = pais + 'no';
 
 #### SELECT 
 
-1.
-```sql
-```
-2.
-```sql
-```
-3.
-```sql
-```
-4.
-```sql
-```
-5.
-```sql
-```
+# TIPS SELECT
 
+1. Valores fijos, agregue una columna y asígnele un valor si no está en la tabla original.
+    ```sql
+    SELECT codigo_producto, nombre, gama, 1 AS ghost 
+    FROM producto;
+    ```
+
+2. Operaciones con columnas, Conoce el total de dos columnas que están relacionadas, pero son tablas diferentes.
+
+    ```sql
+    SELECT DISTINCT d.precio_unidad, producto.precio_venta, (d.precio_unidad + producto.precio_venta) AS Suma FROM producto 
+    INNER JOIN detalle_pedido d ON d.codigo_producto = producto.codigo_producto;
+    ```
+
+
+3. Condiciones, Listar productos y listar en 'Retornar' cuando son iguales a 'Membrillero' aparece un 1, pero si es 'Higuera' un 2 y si no está en la condición anterior devuelve un 3.
+
+    ```sql
+    SELECT nombre, CASE WHEN nombre = 'Membrillero' THEN 1 WHEN nombre = 'Higuera' THEN 2 ELSE 3 END AS Retornar 
+    FROM producto;
+    ```
+
+4. Subconsultas, Lista los rangos y el total de rangos que hay para cada producto.
+
+    ```sql
+    SELECT gama, (SELECT COUNT(producto.gama) FROM producto WHERE producto.gama = gama_producto.gama) AS Total_gamas_productos 
+    FROM gama_producto;
+    ```
+
+5. Consulta en subconsulta, enumera los rangos y el número total de rangos para cada producto, pero mayor que 4.
+
+    ```sql
+    SELECT gama, Total_gama 
+    FROM (SELECT g.gama, COUNT(g.gama) AS Total_gama FROM producto INNER JOIN gama_producto g ON g.gama = producto.gama GROUP BY g.gama) AS MiTabla 
+    WHERE MiTabla.Total_gama > 4;
+    ```
+
+6. Extra: Columna virtual autoincremental, enumere una identificación de autoincremental, el código de producto en relación con el autoincremental y enumere el nombre del producto.
+
+    ```sql
+    SELECT ROW_NUMBER() OVER (ORDER BY (SELECT 1)) AS MiId, codigo_producto, nombre
+    FROM producto ORDER BY nombre;
+    ```
