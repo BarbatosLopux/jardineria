@@ -555,9 +555,21 @@ UPDATE clientes
 SET pais = pais + 'no';
 ```
 
+#### SELECT 
 
-
-
-
-
+1.
+```sql
+```
+2.
+```sql
+```
+3.
+```sql
+```
+4.
+```sql
+```
+5.
+```sql
+```
 
