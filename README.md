@@ -506,12 +506,26 @@ WHERE SUBSTRING(c.nombre_contacto, 1, 1) = 'A'
 GROUP BY c.nombre_cliente
 HAVING COUNT(*) > 2; 
 ```
-5. cuenta el número total de empleados en cada oficina, mostrando el código de la oficina, el país al que pertenece y la cantidad total de empleados en esa oficina.
+5. cuenta el número total de empleados en cada oficina, mostrando el código de la oficina, el país al que pertenece y la cantidad total de empleados en esa oficina. Ademas de mostrar los clientes a que pertenence cada empleado 
 ```sql
-SELECT o.codigo_oficina, o.pais, COUNT(*) AS TotalEmpleados 
-FROM empleado e 
-INNER JOIN oficina o ON e.codigo_oficina = o.codigo_oficina 
-GROUP BY o.codigo_oficina, o.pais; 
+SELECT nombre_cliente, MIN(limite_credito) AS MinLimiteCredito
+FROM (
+    SELECT c.nombre_cliente, c.limite_credito
+    FROM cliente c
+
+    UNION ALL
+
+    SELECT c.nombre_cliente, c.limite_credito
+    FROM cliente c
+    INNER JOIN pedido p ON c.codigo_cliente = p.codigo_cliente
+    WHERE SUBSTRING(c.nombre_contacto, 1, 1) = 'A'
+    GROUP BY c.nombre_cliente, c.limite_credito  -- Include the non-aggregated column in GROUP BY
+    HAVING COUNT(*) > 2
+) AS subconsulta
+GROUP BY nombre_cliente;
+
+
+
 ```
 #### WHERE 
 
