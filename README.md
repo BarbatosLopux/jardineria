@@ -606,8 +606,6 @@ SET pais = pais + 'no';
 
 #### SELECT 
 
-# TIPS SELECT
-
 1. Valores fijos, agregue una columna y asígnele un valor si no está en la tabla original.
     ```sql
     SELECT codigo_producto, nombre, gama, 1 AS ghost 
