@@ -512,20 +512,15 @@ SELECT nombre_cliente, MIN(limite_credito) AS MinLimiteCredito
 FROM (
     SELECT c.nombre_cliente, c.limite_credito
     FROM cliente c
-
     UNION ALL
-
     SELECT c.nombre_cliente, c.limite_credito
     FROM cliente c
     INNER JOIN pedido p ON c.codigo_cliente = p.codigo_cliente
     WHERE SUBSTRING(c.nombre_contacto, 1, 1) = 'A'
-    GROUP BY c.nombre_cliente, c.limite_credito  -- Include the non-aggregated column in GROUP BY
+    GROUP BY c.nombre_cliente, c.limite_credito 
     HAVING COUNT(*) > 2
 ) AS subconsulta
 GROUP BY nombre_cliente;
-
-
-
 ```
 #### WHERE 
 
