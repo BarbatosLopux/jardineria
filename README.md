@@ -4,6 +4,7 @@ A partir de una base de datos brindada se generaran unas consultas pertinentes, 
 ## Modelo Fisico
 ![imagenModeloFisico](./Imagenes/modeloFisicoJardineria.png)
 
+## Primer listado de consultas 
 
 1. Obtén un listado con el nombre de cada cliente y el nombre y apellido de su representante de ventas.
 
@@ -85,8 +86,8 @@ JOIN empleado e ON c.codigo_empleado_rep_ventas = e.codigo_empleado INNER JOIN p
 ```sql
     SELECT DISTINCT c.nombre_cliente , g.gama FROM gama_producto g INNER JOIN producto p ON g.gama = p.gama INNER JOIN detalle_pedido d ON p.codigo_producto = d.codigo_producto INNER JOIN pedido pd ON d.codigo_pedido = pd.codigo_pedido INNER JOIN cliente c ON pd.codigo_cliente = c.codigo_cliente;
 ```
-
-## 1.4.6 Consultas multitabla (Composición externa)
+## Segundo listado de consultas 
+### 1.4.6 Consultas multitabla (Composición externa)
 
 **Resuelva todas las consultas utilizando las cláusulas LEFT JOIN, RIGHT JOIN, NATURAL LEFT JOIN y NATURAL RIGHT JOIN.**
 
@@ -325,7 +326,7 @@ SELECT p.nombre FROM producto p WHERE p.cantidad_en_stock=(SELECT MIN (cantidad_
 SELECT e.nombre, CONCAT(e.apellido1,"  ", e.apellido2), e.email FROM empleado e WHERE e.codigo_empleado IN (SELECT codigo_jefe FROM empleado WHERE nombre = 'Alberto' AND apellido1 = 'Soria') ;
 
 ```
-CORREGIR
+
 #### 1.4.8.2 Subconsultas con ALL y ANY
 
 1. Devuelve el nombre del cliente con mayor límite de crédito.
@@ -476,25 +477,82 @@ WHERE EXISTS (
 1. Multiple agrupamiento 
 ```sql
 
-SELECT p.nombre, p.proveedor, COUNT(*) AS Total 
-FROM producto  
-INNER JOIN cliente c ON c. = dimensiones.codigo_producto
-GROUP BY gama.nombre, dimensiones.proveedor;
+SELECT c.nombre_cliente, COUNT(p.codigo_pedido) AS total_pedidos
+FROM cliente c
+LEFT JOIN pedido p ON c.codigo_cliente = p.codigo_cliente
+GROUP BY c.nombre_cliente;
 
 ```
-2.
+2. Muestra el nombre del producto y la cantidad total de productos por gama.
 ```sql
+SELECT SUBSTRING(p.gama, 1, 1) AS primeraLetraGama, COUNT(*) AS totalProductos
+FROM producto p
+INNER JOIN gama_producto g ON p.gama = g.gama
+GROUP BY SUBSTRING(p.gama, 1, 1);
+```
+3. Busca contar el número total de productos en cada gama, mostrando la primera letra de cada gama y la cantidad total de productos en esa gama.
+```sql
+SELECT SUBSTRING(p.gama, 1, 1) AS gamaLetter, COUNT(*) AS totalProductos
+FROM producto p
+INNER JOIN gama_producto g ON p.gama = g.gama
+GROUP BY SUBSTRING(p.gama, 1, 1);
+```
+4. busca la cantidad mínima de crédito límite entre los clientes cuyos nombres de contacto comienzan con la letra 'A'. Además, muestra solo aquellos clientes cuyos nombres de contacto comienzan con 'A' y tienen más de 2 pedidos realizados.
+```sql
+SELECT c.nombre_cliente, MIN(c.limite_credito) AS MinLimiteCredito
+FROM cliente c
+INNER JOIN pedido p ON c.codigo_cliente = p.codigo_cliente
+WHERE SUBSTRING(c.nombre_contacto, 1, 1) = 'A'
+GROUP BY c.nombre_cliente
+HAVING COUNT(*) > 2; 
+```
+5. cuenta el número total de empleados en cada oficina, mostrando el código de la oficina, el país al que pertenece y la cantidad total de empleados en esa oficina.
+```sql
+SELECT o.codigo_oficina, o.pais, COUNT(*) AS TotalEmpleados 
+FROM empleado e 
+INNER JOIN oficina o ON e.codigo_oficina = o.codigo_oficina 
+GROUP BY o.codigo_oficina, o.pais; 
+```
+#### WHERE 
+
+1.  
+2.
+3.
+4.
+5.
+
+#### UPDATE 
+1. 
+```sql
+CREATE VIEW vista_json_data 
+AS SELECT
+	CAST(imagen AS JSON) as imagen_json
+FROM gama_producto;
+```
+2. 
+```sql
+UPDATE producto
+SET gama = 'No gama'
+FROM producto
+RIGHT JOIN producto.gama = gama.gama;
 ```
 3.
 ```sql
+UPDATE empleado
+SET pueto = (
+	SELECT puesto FROM empleado WHERE codigo_empleado = 1
+)
+WHERE codigo_empleado = 2
 ```
 4.
 ```sql
-
-SELECT 
+UPDATE clientes
+SET pais = DEFAULT
 ```
 5.
 ```sql
+UPDATE clientes
+SET pais = pais + 'no';
 ```
 
 
@@ -502,4 +560,4 @@ SELECT
 
 
 
- 
+
